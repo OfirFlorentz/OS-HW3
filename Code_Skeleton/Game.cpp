@@ -1,10 +1,14 @@
 #include "Game.hpp"
-
+#include "utils.hpp"
+#include "ThreadP.hpp"
 
 static const char *colors[7] = {BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN};
 /*--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------*/
+Game::Game(game_params m_gp) : m_gen_num(m_gp.n_gen), interactive_on(m_gp.interactive_on), print_on(m_gp.print_on), m_filename(m_gp.filename){}
+
+
 void Game::run() {
 
 	_init_game(); // Starts the threads and all other variables you need
@@ -22,7 +26,16 @@ void Game::run() {
 
 void Game::_init_game() {
 	// Create threads
+    for (int i = 0; i < m_thread_num; i++) {
+        m_threadpool.push_back(new ThreadP(i));
+    }
 	// Create game fields
+    vector<string> temp = utils::read_lines(m_filename);
+    for (auto& it = temp.begin()); it {
+        m_board.push_back(utils::split(it, ' '));
+    }
+
+    m_thread_num = (m_thread_temp < m_board.size()) ? m_thread_temp: m_board.size();
 	// Start the threads
 	// Testing of your implementation will presume all threads are started here
 }
@@ -44,7 +57,7 @@ void Game::_destroy_game(){
 --------------------------------------------------------------------------------*/
 inline static void print_board(const char* header) {
 
-	if(print_on){ 
+	if(print_on){
 
 		// Clear the screen, to create a running animation 
 		if(interactive_on)
