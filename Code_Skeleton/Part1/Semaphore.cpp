@@ -1,6 +1,3 @@
-//
-// Created by student on 12/27/20.
-//
 #include "Semaphore.hpp"
 
 Semaphore::Semaphore() : counter(1), min(0), next(0) { // TODO
@@ -21,7 +18,7 @@ void Semaphore::up() {
     pthread_mutex_lock(&m);
     ++counter;
     pthread_cond_broadcast(&c);
-//    pthread_cond_signal(&c); // TODO
+//    pthread_cond_signal(&c); // TODO speed vs Deadlock
     pthread_mutex_unlock(&m);
 }
 
