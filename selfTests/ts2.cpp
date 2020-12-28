@@ -48,14 +48,18 @@ void* pop(void* arg) {
 int main(){
 
     cout << "***************************** test 1 *****************************" << endl;
-    pthread_t tg0, tg1;
-    int x;
-    int y = 1;
-    pthread_create(&tg0, nullptr, pop, &x);
-    pthread_create(&tg1, nullptr, push, &y);
+    pthread_t tg0, tg1,tg2, tg3;
+    int x1,x2;
+    int y1=1;
+    int y2=2;
+    pthread_create(&tg0, nullptr, pop, &x1);
+    pthread_create(&tg0, nullptr, pop, &x2);
+    pthread_create(&tg1, nullptr, push, &y1);
     sleep(2);
-    cout << x << endl;
-    assert(x == 1);
+    pthread_create(&tg1, nullptr, push, &y2);
+    sleep(2);
+    assert(x1 == 1);
+    assert(x2 == 2);
 
 }
 
