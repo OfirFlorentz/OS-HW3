@@ -1,7 +1,3 @@
-//
-// Created by student on 12/27/20.
-//
-
 #include "PCQueue.hpp"
 
 template <typename T>
@@ -20,7 +16,7 @@ T PCQueue<T>::pop() {
 }
 
 template <typename T>
-void  PCQueue<T>::push(const T& item) {
+void PCQueue<T>::push(const T& item) {
     pthread_mutex_lock(&m_lock);
     m_queue.push(item);
     pthread_mutex_unlock(&m_lock);

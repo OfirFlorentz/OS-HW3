@@ -6,7 +6,7 @@
 #include <pthread.h>
 
 #define MAX_THREAD 100
-#define MAX_THREAD_EXTRA 5000
+#define MAX_THREAD_EXTRA 1000
 #define MAX_CORES 5
 
 
@@ -145,7 +145,6 @@ int main(){
     }
 
     return 0;
-
 
 }
 
