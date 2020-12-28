@@ -23,7 +23,7 @@ public:
 private:
 	Semaphore m_sem;
 	queue<T> m_queue;
-	pthread_mutex_t m_lock;
+	pthread_mutex_t m_lock{};
 
 };
 // Recommendation: Use the implementation of the std::queue for this exercise
