@@ -1,11 +1,14 @@
 #ifndef _QUEUEL_H
 #define _QUEUEL_H
 #include "Headers.hpp"
+#include "Semaphore.hpp"
+
+
 // Single Producer - Multiple Consumer queue
 template <typename T>class PCQueue
 {
-
 public:
+    PCQueue();
 	// Blocks while queue is empty. When queue holds items, allows for a single
 	// thread to enter and remove an item from the front of the queue and return it. 
 	// Assumes multiple consumers.
@@ -18,7 +21,10 @@ public:
 
 
 private:
-	// Add your class memebers here
+	Semaphore m_sem;
+	queue<T> m_queue;
+	pthread_mutex_t m_lock;
+
 };
 // Recommendation: Use the implementation of the std::queue for this exercise
 #endif

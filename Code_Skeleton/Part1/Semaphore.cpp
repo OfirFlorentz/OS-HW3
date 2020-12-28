@@ -9,9 +9,6 @@ Semaphore::Semaphore(unsigned val) : counter(val), min(0), next(0) { // TODO val
     pthread_mutex_init(&m, nullptr);
     pthread_cond_init(&c, nullptr);
 
-    if (val == 0) { // TODO
-        counter = 1;
-    }
 };
 
 void Semaphore::up() {
