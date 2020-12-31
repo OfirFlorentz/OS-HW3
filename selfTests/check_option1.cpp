@@ -30,7 +30,7 @@
 
 int main() {
     vector<Thread*> m_threadpool;
-    int size = 1;
+    int size = 10;
 
     for (uint i = 0; i < size; ++i) {
         ThreadP * thr = new ThreadP(i);
