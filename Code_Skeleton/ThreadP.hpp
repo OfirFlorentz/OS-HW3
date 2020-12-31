@@ -10,10 +10,8 @@
 class ThreadP: public Thread{
 public:
     ThreadP(uint thread_id);
-    void thread_workload() override {
-        cout << 1 << endl;
-        m_ended = true;
-    }
+    ~ThreadP() = default;
+    void thread_workload() override;
 };
 
 #endif //WET3_FILES_THREADP_H

@@ -6,45 +6,41 @@
 class Thread
 {
 public:
-	Thread(uint thread_id) {
-      m_thread_id = thread_id;
-	} 
-	virtual ~Thread() {} // Does nothing 
+	Thread(uint thread_id) : m_thread_id(thread_id) {};
+	virtual ~Thread() {} // Does nothing
+
 
 	/** Returns true if the thread was successfully started, false if there was an error starting the thread */
 	bool start() {
-    try {
-        entry_func(&m_thread);
-    } catch (...) {
-        return false;
-    }
-    return true;
+	    cout << "trying to run threat func for thread num " << m_thread_id << endl;
+        return pthread_create(&m_thread, nullptr, entry_func, nullptr) == 0;
 	}
 
 	/** Will not return until the internal thread has exited. */
 	void join(){
-	    while (!m_ended);
+	    pthread_join(m_thread, nullptr);
 	}
 
 	/** Returns the thread_id **/
 	uint thread_id(){
-    return m_thread_id;
+        return m_thread_id;
 	}
 
 protected:
 	/** Implement this method in your subclass with the code you want your thread to run. */
 	virtual void thread_workload() = 0;
+//	virtual void thread_workload();
+//	void thread_workload() {};
 	uint m_thread_id; // A number from 0 -> Number of threads initialized, providing a simple numbering for you to use
-	bool m_ended;
-	bool m_started;
+
 
 private:
 	static void *  entry_func(void * thread) {
-    ((Thread *)thread)->thread_workload();
-    return NULL;
+		cout << "inside entry_func. trying to accesses thread_workload" << endl;
+        ((Thread *)thread)->thread_workload();
+        return NULL;
 	}
 	pthread_t m_thread;
-
 };
 
 #endif

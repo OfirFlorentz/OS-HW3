@@ -6,7 +6,8 @@ static const char *colors[7] = {BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN};
 /*--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------*/
-Game::Game(game_params m_gp) : m_gen_num(m_gp.n_gen), interactive_on(m_gp.interactive_on), print_on(m_gp.print_on), m_filename(m_gp.filename){}
+Game::Game(game_params m_gp) : m_gen_num(m_gp.n_gen), interactive_on(m_gp.interactive_on), print_on(m_gp.print_on),
+m_filename(m_gp.filename), m_gen_hist(), m_tile_hist(), m_threadpool(), m_board() {}
 
 
 void Game::run() {
@@ -31,11 +32,18 @@ void Game::_init_game() {
     }
 	// Create game fields
     vector<string> temp = utils::read_lines(m_filename);
-    for (auto& it = temp.begin()); it {
-        m_board.push_back(utils::split(it, ' '));
+    for (auto& it : temp) {
+        m_board.push_back(utils::split(it, '\n'));
     }
 
-    m_thread_num = (m_thread_temp < m_board.size()) ? m_thread_temp: m_board.size();
+//    if (m_thread_temp > m_board.size()) {
+//        m_thread_num = m_board.size();
+//    }
+    m_thread_num = m_thread_temp < m_board.size() ? m_thread_temp : m_board.size();
+
+
+
+
 	// Start the threads
 	// Testing of your implementation will presume all threads are started here
 }
@@ -43,7 +51,14 @@ void Game::_init_game() {
 void Game::_step(uint curr_gen) {
 	// Push jobs to queue
 	// Wait for the workers to finish calculating 
-	// Swap pointers between current and next field 
+	// Swap pointers between current and next field
+    vector<vector<string>> next_board = m_board;
+    int div = m_board.size() / m_thread_num;
+    for (int i = 0; i < m_thread_num; ++i) {
+        ThreadP *thr = new ThreadP(i);
+
+    }
+
 }
 
 void Game::_destroy_game(){
