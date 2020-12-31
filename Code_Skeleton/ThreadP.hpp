@@ -15,7 +15,7 @@ class ThreadP: public Thread{
     std::chrono::duration<double> time;
 public:
     ThreadP(uint thread_id, vector<vector<int>> & curr_board, vector<vector<int>> & next_board, int start_line,
-            int num_of_line, int time);
+            int num_of_line);
     ~ThreadP() = default;
     void thread_workload() override;
     std::chrono::duration<double> get_iter_time();

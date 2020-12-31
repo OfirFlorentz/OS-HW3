@@ -12,7 +12,6 @@ public:
 
 	/** Returns true if the thread was successfully started, false if there was an error starting the thread */
 	bool start() {
-	    cout << "trying to run threat func for thread num " << m_thread_id << endl;
         return pthread_create(&m_thread, nullptr, entry_func, this) == 0;
 	}
 
@@ -34,7 +33,7 @@ protected:
 
 private:
 	static void *  entry_func(void * thread) {
-		cout << "inside entry_func. trying to accesses thread_workload" << endl;
+//		cout << "inside entry_func. trying to accesses thread_workload" << endl;  // TODO double print problem. need to speak about it SH
         ((Thread *)thread)->thread_workload();
         return NULL;
 	}
