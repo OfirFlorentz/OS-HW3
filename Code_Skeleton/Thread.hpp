@@ -28,9 +28,11 @@ public:
 
 protected:
 	/** Implement this method in your subclass with the code you want your thread to run. */
-	virtual void thread_workload() = 0;
+//	virtual void thread_workload() = 0;
 //	virtual void thread_workload();
-//	void thread_workload() {};
+	virtual void thread_workload() {
+	    cout << "hi" << endl;
+	};
 	uint m_thread_id; // A number from 0 -> Number of threads initialized, providing a simple numbering for you to use
 
 

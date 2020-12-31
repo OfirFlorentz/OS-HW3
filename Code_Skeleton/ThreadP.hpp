@@ -8,10 +8,10 @@
 #include "Thread.hpp"
 
 class ThreadP: public Thread{
+    void thread_workload() override;
 public:
     ThreadP(uint thread_id);
     ~ThreadP() = default;
-    void thread_workload() override;
 };
 
 #endif //WET3_FILES_THREADP_H
