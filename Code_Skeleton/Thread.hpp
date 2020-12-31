@@ -33,7 +33,7 @@ protected:
 
 private:
 	static void *  entry_func(void * thread) {
-		cout << "inside entry_func. trying to accesses thread_workload" << endl;  // TODO double print problem. need to speak about it SH
+//		cout << "inside entry_func. trying to accesses thread_workload" << endl;  // TODO double print problem. need to speak about it SH
         ((Thread *)thread)->thread_workload();
         return NULL;
 	}
