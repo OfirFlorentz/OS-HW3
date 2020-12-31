@@ -13,6 +13,7 @@ public:
 	/** Returns true if the thread was successfully started, false if there was an error starting the thread */
 	bool start() {
 	    cout << "trying to run threat func for thread num " << m_thread_id << endl;
+	    pthread_t tmp[1];
         return pthread_create(&m_thread, nullptr, entry_func, nullptr) == 0;
 	}
 
@@ -28,11 +29,11 @@ public:
 
 protected:
 	/** Implement this method in your subclass with the code you want your thread to run. */
-//	virtual void thread_workload() = 0;
+	virtual void thread_workload() = 0;
 //	virtual void thread_workload();
-	virtual void thread_workload() {
-	    cout << "hi" << endl;
-	};
+//	virtual void thread_workload() {
+//	    cout << "hi" << endl;
+//	};
 	uint m_thread_id; // A number from 0 -> Number of threads initialized, providing a simple numbering for you to use
 
 
