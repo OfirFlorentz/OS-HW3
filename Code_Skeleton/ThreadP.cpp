@@ -21,12 +21,15 @@ void ThreadP::thread_workload() {
             uint right = curr_board[0].size()-1 < j+1 ? curr_board[0].size()-1 : j+1;
 
             int num_of_neighbours = 0;
-            vector<int> colors_hist = {0,0,0,0,0,0,0,0};
+            int colors_hist [8] = {0,0,0,0,0,0,0,0};
             for (int k = bottom; k <= top; ++k) { // count num of alive neighbours
-                for (int l = left; l < right; ++l) {
-                    if ((k != i && l != j) && curr_board[k][l] != 0) {
+                for (int l = left; l <= right; ++l) {
+                    if (k == i && l == j) {
+                        continue;
+                    }
+                    else if (curr_board[k][l] != 0) {
                         if (++num_of_neighbours <= 3) {
-                            colors_hist[(int)(curr_board[k][l])]++; // mapping dominant species of neighbours
+                            colors_hist[(curr_board[k][l])]++; // mapping dominant species of neighbours
                         }
                     }
                 }
@@ -35,7 +38,7 @@ void ThreadP::thread_workload() {
             if (curr_board[i][j] == 0 && num_of_neighbours == 3) {
                 int dominant_species = 0;
                 int max = 0;
-                for (int k = 0; k < colors_hist.size(); ++k) {
+                for (int k = 0; k < 8; ++k) {
                     if (colors_hist[k] > max) {
                         max = colors_hist[k];
                         dominant_species = k;
@@ -51,7 +54,18 @@ void ThreadP::thread_workload() {
 
     auto end = std::chrono::system_clock::now();
     time = start-end;
+
     cout << "finish the work of thread number " << m_thread_id << endl;  // TODO printing for testing only
+
+//    cout << "print the new board (only for testing): " << endl; // TODO printing for testing only
+//    for (int i = 0; i < 5; ++i) {
+//        for (int j = 0; j < 8; ++j) {
+//            cout << next_board[i][j];
+//        }
+//        cout << endl;
+//    }
+//    cout << "finish to print the new board (only for testing): " << endl;
+
 }
 
 std::chrono::duration<double> ThreadP::get_iter_time() {
