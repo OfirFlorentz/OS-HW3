@@ -32,8 +32,12 @@ void Game::_init_game() {
     // Create game fields
     vector<string> temp = utils::read_lines(m_filename);
     for (auto& it : temp) {
-        m_board.push_back(utils::split(it, ' '));
-        m_old_board.push_back(utils::split(it, ' '));
+        vector<string> v = utils::split(it, ' ');
+        vector<int> v_t = vector<int>();
+        for (int i= 0 ; i < v.size(); i++)
+            v_t.push_back((int)v[i][0]);
+        m_board.push_back(v_t);
+        m_old_board.push_back(v_t);
     }
 
 
@@ -43,17 +47,15 @@ void Game::_init_game() {
         m_thread_num = m_thread_temp;
     }
 
-    int div = m_board.size() / m_thread_num;
+    int row_num = m_board.size() / m_thread_num;
     int remain = m_board.size() % m_thread_num;
 
 
     // Create threads n-1 first threads
     for (int i = 0; i < m_thread_num - 1; i++) {
-        //TODO init thred
-        m_threadpool.push_back(new ThreadP(i));
+        m_threadpool.push_back(new ThreadP(i, m_board, m_old_board, row_num*i, row_num));
     }
-    //TODO init last_thread
-    m_threadpool.push_back(new ThreadP(m_thread_num-1));
+    m_threadpool.push_back(new ThreadP(m_thread_num-1, m_board, m_old_board, row_num*(m_thread_num-1), row_num + remain));
 
 
 
@@ -79,7 +81,7 @@ void Game::_step(uint curr_gen) {
 
 
     // swap old and new board
-    vector<vector<string>>& temp = m_board;
+    vector<vector<int>>& temp = m_board;
     m_board = m_old_board;
     m_old_board = temp;
 }
@@ -129,13 +131,5 @@ inline void Game::print_board(const char* header) {
 	}
 
 }
-
-
-/* Function sketch to use for printing the board. You will need to decide its placement and how exactly 
-	to bring in the field's parameters.
-
-
-*/
-
 
 
