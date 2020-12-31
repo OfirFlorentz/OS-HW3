@@ -1,5 +1,5 @@
-#include "../Code_Skeleton/Part1/Headers.hpp"
-#include "../Code_Skeleton/Part1/Semaphore.hpp"
+#include "../Code_Skeleton/Headers.hpp"
+#include "../Code_Skeleton/Semaphore.hpp"
 
 
 // Threads & Synchronization

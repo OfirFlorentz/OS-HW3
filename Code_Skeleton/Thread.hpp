@@ -14,7 +14,7 @@ public:
 	bool start() {
 	    cout << "trying to run threat func for thread num " << m_thread_id << endl;
 	    pthread_t tmp[1];
-        return pthread_create(&m_thread, nullptr, entry_func, nullptr) == 0;
+	    return pthread_create(tmp, nullptr, entry_func, nullptr) == 0;
 	}
 
 	/** Will not return until the internal thread has exited. */

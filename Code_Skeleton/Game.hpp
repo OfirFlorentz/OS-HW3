@@ -46,9 +46,11 @@ protected: // All members here are protected, instead of private for testing pur
 	// See Game.cpp for details on these three functions
 	void _init_game(); 
 	void _step(uint curr_gen); 
-	void _destroy_game(); 
+	void _destroy_game();
+	inline  void print_board(const char* header);
 
-	uint m_gen_num; 			 // The number of generations to run
+
+  uint m_gen_num; 			 // The number of generations to run
 	uint m_thread_num; 			 // Effective number of threads = min(thread_num, field_height)
 	uint m_thread_temp;    // not Effective number of threads
 	vector<float> m_tile_hist; 	 // Shared Timing history for tiles: First m_gen_num cells are the calculation durations for tiles in generation 1 and so on.
@@ -58,7 +60,8 @@ protected: // All members here are protected, instead of private for testing pur
 
 	bool interactive_on; // Controls interactive mode - that means, prints the board as an animation instead of a simple dump to STDOUT 
 	bool print_on; // Allows the printing of the board. Turn this off when you are checking performance (Dry 3, last question)
-	vector<vector<string>> m_board;
+	vector<vector<int>> m_board;
+	vector<vector<int>> m_old_board;
 	string m_filename;
 
 
