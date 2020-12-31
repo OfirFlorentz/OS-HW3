@@ -5,7 +5,7 @@
 #include "Thread.hpp"
 
 
-ThreadP::ThreadP(uint thread_id, vector<vector<int>> & curr_board, vector<vector<int>> & next_board, int start_line,
+ThreadP::ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* next_board, int start_line,
                  int num_of_line) : Thread(thread_id), curr_board(curr_board), next_board(next_board),
                  start_line(start_line), num_of_line(num_of_line), time(0) {};
 
@@ -16,7 +16,7 @@ void ThreadP::thread_workload() {
     for (int i = start_line; i < start_line+num_of_line; ++i) {
         for (int j = 0; j < curr_board[start_line].size(); ++j) {
             uint bottom = 0 > i-1 ? 0 : i-1;
-            uint top = curr_board.size()-1 < i+1 ? curr_board.size()-1 : i+1;
+            uint top = curr_board->size()-1 < i+1 ? curr_board->size()-1 : i+1;
             uint left = 0 > j-1 ? 0 : j-1;
             uint right = curr_board[0].size()-1 < j+1 ? curr_board[0].size()-1 : j+1;
 
@@ -27,15 +27,15 @@ void ThreadP::thread_workload() {
                     if (k == i && l == j) {
                         continue;
                     }
-                    else if (curr_board[k][l] != 0) {
+                    else if ((*curr_board)[k][l] != 0) {
                         if (++num_of_neighbours <= 3) {
-                            colors_hist[(curr_board[k][l])]++; // mapping dominant species of neighbours
+                            colors_hist[((*curr_board)[k][l])]++; // mapping dominant species of neighbours
                         }
                     }
                 }
             }
 
-            if (curr_board[i][j] == 0 && num_of_neighbours == 3) {
+            if ((*curr_board)[i][j] == 0 && num_of_neighbours == 3) {
                 int dominant_species = 0;
                 int max = 0;
                 for (int k = 0; k < 8; ++k) {
@@ -43,11 +43,11 @@ void ThreadP::thread_workload() {
                         max = colors_hist[k];
                         dominant_species = k;
                     }
-                next_board[i][j] = dominant_species;
+                    (*next_board)[i][j] = dominant_species;
                 }
             }
-            else if (curr_board[i][j] != 0 && num_of_neighbours != 2 && num_of_neighbours != 3) {
-                    next_board[i][j] = 0;
+            else if ((*curr_board)[i][j] != 0 && num_of_neighbours != 2 && num_of_neighbours != 3) {
+                (*next_board)[i][j] = 0;
             }
         }
     }

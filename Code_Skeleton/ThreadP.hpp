@@ -8,13 +8,13 @@
 #include "Thread.hpp"
 
 class ThreadP: public Thread{
-    vector<vector<int>> curr_board;
-    vector<vector<int>> next_board;
+    vector<vector<int>>* curr_board;
+    vector<vector<int>>* next_board;
     int start_line;
     int num_of_line;
     std::chrono::duration<double> time;
 public:
-    ThreadP(uint thread_id, vector<vector<int>> & curr_board, vector<vector<int>> & next_board, int start_line,
+    ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* next_board, int start_line,
             int num_of_line);
     ~ThreadP() = default;
     void thread_workload() override;
