@@ -6,11 +6,11 @@
 
 
 ThreadP::ThreadP(uint thread_id, vector<vector<int>> & curr_board, vector<vector<int>> & next_board, int start_line,
-                 int num_of_line, int time) : Thread(thread_id), curr_board(curr_board), next_board(next_board),
+                 int num_of_line) : Thread(thread_id), curr_board(curr_board), next_board(next_board),
                  start_line(start_line), num_of_line(num_of_line), time(0) {};
 
 void ThreadP::thread_workload() {
-    cout << "start the work of number thread " << m_thread_id << endl;
+    cout << "start the work of thread number " << m_thread_id << endl; // TODO printing for testing only
     auto start = std::chrono::system_clock::now();
 
     for (int i = start_line; i < start_line+num_of_line; ++i) {
@@ -51,6 +51,7 @@ void ThreadP::thread_workload() {
 
     auto end = std::chrono::system_clock::now();
     time = start-end;
+    cout << "finish the work of thread number " << m_thread_id << endl;  // TODO printing for testing only
 }
 
 std::chrono::duration<double> ThreadP::get_iter_time() {
