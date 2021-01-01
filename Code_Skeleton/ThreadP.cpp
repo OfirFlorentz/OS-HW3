@@ -14,9 +14,10 @@ void ThreadP::thread_workload() {
     auto start = std::chrono::system_clock::now();
 
     for (int i = start_line; i < start_line+num_of_line; ++i) {
+        int bottom = 0 > i-1 ? 0 : i-1;
+        int top = i+1 < curr_board->size() ? i+1 : curr_board->size()-1;
+
         for (int j = 0; j < (*curr_board)[i].size(); ++j) {
-            int bottom = 0 > i-1 ? 0 : i-1;
-            int top = curr_board->size()-1 < i+1 ? curr_board->size()-1 : i+1;
             int left = 0 > j-1 ? 0 : j-1;
             int right = (*curr_board)[i].size()-1 < j+1 ? (*curr_board)[i].size()-1 : j+1;
 
@@ -29,7 +30,6 @@ void ThreadP::thread_workload() {
                     }
                     else if ((*curr_board)[k][l] != 0) {
                         if (++num_of_neighbours <= 3) {
-                            int tmppp = ((*curr_board)[k][l]); // TODO
                             colors_hist[((*curr_board)[k][l])]++; // mapping dominant species of neighbours
                         }
                     }

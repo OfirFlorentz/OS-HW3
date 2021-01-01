@@ -47,13 +47,15 @@ void test2 () {
     cout << "************ start test2 ************" << endl;
     struct game_params p1;
     p1.n_gen = 5;
-    p1.n_thread = 1;
     p1.filename = "../selfBoards/b1.txt";
     p1.interactive_on = false;
     p1.print_on = true;
 
-    Game* g = new Game(p1);
-    g->run();
+    for (int i = 1; i < 7; ++i) {
+        p1.n_thread = i;
+        Game* g = new Game(p1);
+        g->run();
+    }
 
     cout << "************ finish test2************\n" << endl;
 }
