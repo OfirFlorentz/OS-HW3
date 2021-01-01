@@ -60,10 +60,59 @@ void test2 () {
     cout << "************ finish test2************\n" << endl;
 }
 
+void test3 () {
+    cout << "************ start test3 ************" << endl;
+    struct game_params p1;
+    p1.n_gen = 3;
+    p1.filename = "../selfBoards/random_board1.txt";
+    p1.interactive_on = false;
+    p1.print_on = true;
+    p1.n_thread = 18;
+
+    Game* g = new Game(p1);
+    g->run();
+
+    cout << "************ finish test3 ************\n" << endl;
+}
+
+void test4 () {
+    cout << "************ start test4 ************" << endl;
+    struct game_params p1;
+    p1.n_gen = 2;
+    p1.filename = "../selfBoards/random_board2.txt";
+    p1.interactive_on = false;
+    p1.print_on = true;
+    p1.n_thread = 10;
+
+    Game* g = new Game(p1);
+    g->run();
+
+    cout << "************ finish test4 ************\n" << endl;
+}
+
+void test5 () {
+    cout << "************ start test5 ************" << endl;
+    struct game_params p1;
+    p1.n_gen = 5;
+    p1.filename = "../selfBoards/random_board3.txt";
+    p1.interactive_on = false;
+    p1.print_on = true;
+    p1.n_thread = 10;
+
+    Game* g = new Game(p1);
+    g->run();
+
+    cout << "************ finish test5 ************\n" << endl;
+}
+
 
 int main() {
-//    test1();
+    test1();
     test2();
+    test3();
+    test4();
+    test5();
+
 
 
     return 0;

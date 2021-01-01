@@ -1,16 +1,12 @@
-
-#include "Game.hpp"
-#include "utils.hpp"
 #include "ThreadP.hpp"
 #include "Thread.hpp"
 
-
 ThreadP::ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* next_board, int start_line,
-                 int num_of_line) : Thread(thread_id), curr_board(curr_board), next_board(next_board),
-                 start_line(start_line), num_of_line(num_of_line), time(0) {};
+                 int num_of_line, vector<float>* tile_hist, pthread_mutex_t* mutex) : Thread(thread_id),
+                 curr_board(curr_board), next_board(next_board), start_line(start_line), num_of_line(num_of_line),
+                 tile_hist(tile_hist), mutex(mutex)  {};
 
 void ThreadP::thread_workload() {
-//    cout << "start the work of thread number " << m_thread_id << endl; // TODO printing for testing only
     auto start = std::chrono::system_clock::now();
 
     for (int i = start_line; i < start_line+num_of_line; ++i) {
@@ -40,8 +36,8 @@ void ThreadP::thread_workload() {
                 int dominant_species = 0;
                 int max = 0;
                 for (int k = 0; k < 8; ++k) {
-                    if (colors_hist[k] > max) {
-                        max = colors_hist[k];
+                    if (colors_hist[k]*k > max) {
+                        max = colors_hist[k]*k; // TODO
                         dominant_species = k;
                     }
                     (*next_board)[i][j] = dominant_species;
@@ -53,13 +49,8 @@ void ThreadP::thread_workload() {
         }
     }
 
+    pthread_mutex_lock(mutex);
     auto end = std::chrono::system_clock::now();
-    time = start-end;
-
-//    cout << "finish the work of thread number " << m_thread_id << endl;  // TODO printing for testing only
-
-}
-
-std::chrono::duration<float> ThreadP::get_iter_time() {
-    return time;
+    tile_hist->push_back((float)std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
+    pthread_mutex_unlock(mutex);
 }

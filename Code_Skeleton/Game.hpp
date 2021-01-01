@@ -63,6 +63,7 @@ protected: // All members here are protected, instead of private for testing pur
 	vector<vector<int>> m_board;
 	vector<vector<int>> m_old_board;
 	string m_filename;
+	pthread_mutex_t m_mutex;
 
 
 	// TODO: Add in your variables and synchronization primitives  

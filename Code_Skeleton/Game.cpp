@@ -9,7 +9,7 @@ inline static void print_board(const char* header) ;
 
 --------------------------------------------------------------------------------*/
 Game::Game(game_params m_gp) : m_gen_num(m_gp.n_gen), interactive_on(m_gp.interactive_on), print_on(m_gp.print_on),
-m_filename(m_gp.filename), m_gen_hist(), m_tile_hist(), m_threadpool(), m_board(), m_thread_temp (m_gp.n_thread){}
+m_filename(m_gp.filename), m_gen_hist(), m_tile_hist(), m_threadpool(), m_board(), m_thread_temp (m_gp.n_thread) {}
 
 
 void Game::run() {
@@ -31,6 +31,7 @@ void Game::run() {
 void Game::_init_game() {
     // Create game fields
     vector<string> temp = utils::read_lines(m_filename);
+    pthread_mutex_init(&m_mutex, nullptr);
 
     for (auto& it : temp) {
         vector<string> v = utils::split(it, ' ');
@@ -54,9 +55,10 @@ void Game::_init_game() {
 
     // Create threads n-1 first threads
     for (int i = 0; i < m_thread_num - 1; i++) {
-        m_threadpool.push_back(new ThreadP(i, &m_board, &m_old_board, row_num*i, row_num));
+        m_threadpool.push_back(new ThreadP(i, &m_board, &m_old_board, row_num*i, row_num, &m_tile_hist, &m_mutex));
     }
-    m_threadpool.push_back(new ThreadP(m_thread_num-1, &m_board, &m_old_board, row_num*(m_thread_num-1), row_num + remain));
+    m_threadpool.push_back(new ThreadP(m_thread_num-1, &m_board, &m_old_board, row_num*(m_thread_num-1),
+                                       row_num + remain, &m_tile_hist, &m_mutex));
 
 
 
@@ -76,7 +78,6 @@ void Game::_step(uint curr_gen) {
     }
     for (int i = 0; i < m_thread_num; ++i) {
         m_threadpool[i]->join();
-//        m_tile_hist.push_back(((ThreadP*)m_threadpool[i])->get_iter_time()); // TODO
     }
 
 
