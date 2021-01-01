@@ -76,6 +76,7 @@ void Game::_step(uint curr_gen) {
     }
     for (int i = 0; i < m_thread_num; ++i) {
         m_threadpool[i]->join();
+//        m_tile_hist.push_back(((ThreadP*)m_threadpool[i])->get_iter_time()); // TODO
     }
 
 

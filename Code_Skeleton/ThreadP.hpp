@@ -12,13 +12,13 @@ class ThreadP: public Thread{
     vector<vector<int>>* next_board;
     int start_line;
     int num_of_line;
-    std::chrono::duration<double> time;
+    std::chrono::duration<float> time;
 public:
     ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* next_board, int start_line,
             int num_of_line);
     ~ThreadP() = default;
     void thread_workload() override;
-    std::chrono::duration<double> get_iter_time();
+    std::chrono::duration<float> get_iter_time();
 };
 
 #endif //WET3_FILES_THREADP_H
