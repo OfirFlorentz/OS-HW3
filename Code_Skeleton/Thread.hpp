@@ -2,6 +2,7 @@
 #define __THREAD_H
 
 #include "Headers.hpp"
+//#include <pthread.h> // TODO i added this. make does not work without it SH
 
 class Thread
 {

@@ -14,6 +14,8 @@ class ThreadP: public Thread{
     int num_of_line;
     vector<float>* tile_hist;
     pthread_mutex_t* mutex;
+    float time_temp;
+    bool phase;
 
 public:
     ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* next_board, int start_line,

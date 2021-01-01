@@ -49,7 +49,7 @@ void test1 () {
     vector<vector<int>> board1 = {tmp1, tmp2, tmp3, tmp4, tmp5};
     vector<vector<int>> next_board = board1;
 
-    ThreadP* t = new ThreadP(0,&board1,&next_board,0,5, &m_tile_hist, &m_mutex);
+    ThreadP* t = new ThreadP(0, &board1, &next_board, 0, 5, &m_tile_hist, &m_mutex);
     t->start();
     t->join();
 
@@ -69,7 +69,7 @@ void test2 () {
     vector<vector<int>> board1 = {tmp1, tmp2, tmp3, tmp4, tmp5};
     vector<vector<int>> next_board = board1;
 
-    ThreadP* t = new ThreadP(0,&board1,&next_board,0,5, &m_tile_hist, &m_mutex);
+    ThreadP* t = new ThreadP(0, &board1, &next_board, 0, 5, &m_tile_hist, &m_mutex);
     t->start();
     t->join();
 
@@ -89,7 +89,7 @@ void test3 () {
     vector<vector<int>> board1 = {tmp1, tmp2, tmp3, tmp4, tmp5};
     vector<vector<int>> next_board = board1;
 
-    ThreadP* t = new ThreadP(0,&board1,&next_board,0,5, &m_tile_hist, &m_mutex);
+    ThreadP* t = new ThreadP(0, &board1, &next_board, 0, 5, &m_tile_hist, &m_mutex);
     t->start();
     t->join();
 
@@ -109,7 +109,7 @@ void test4 () {
     vector<vector<int>> board1 = {tmp1, tmp2, tmp3, tmp4, tmp5};
     vector<vector<int>> next_board = board1;
 
-    ThreadP* t = new ThreadP(0,&board1,&next_board,0,5, &m_tile_hist, &m_mutex);
+    ThreadP* t = new ThreadP(0, &board1, &next_board, 0, 5, &m_tile_hist, &m_mutex);
     t->start();
     t->join();
 
@@ -131,8 +131,8 @@ void test5 () {
     vector<vector<int>> board1 = {tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7};
     vector<vector<int>> next_board = board1;
 
-    ThreadP* t1 = new ThreadP(0,&board1,&next_board,1,3, &m_tile_hist, &m_mutex);
-    ThreadP* t2 = new ThreadP(0,&board1,&next_board,5,1, &m_tile_hist, &m_mutex);
+    ThreadP* t1 = new ThreadP(0, &board1, &next_board, 1, 3, &m_tile_hist, &m_mutex);
+    ThreadP* t2 = new ThreadP(0, &board1, &next_board, 5, 1, &m_tile_hist, &m_mutex);
 
     t1->start();
     t2->start();
@@ -158,9 +158,9 @@ void test6 () {
     vector<vector<int>> board1 = {tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7};
     vector<vector<int>> next_board = board1;
 
-    ThreadP* t1 = new ThreadP(0,&board1,&next_board,0,3, &m_tile_hist, &m_mutex);
-    ThreadP* t2 = new ThreadP(0,&board1,&next_board,3,3, &m_tile_hist, &m_mutex);
-    ThreadP* t3 = new ThreadP(0,&board1,&next_board,6,2, &m_tile_hist, &m_mutex);
+    ThreadP* t1 = new ThreadP(0, &board1, &next_board, 0, 3, &m_tile_hist, &m_mutex);
+    ThreadP* t2 = new ThreadP(0, &board1, &next_board, 3, 3, &m_tile_hist, &m_mutex);
+    ThreadP* t3 = new ThreadP(0, &board1, &next_board, 6, 2, &m_tile_hist, &m_mutex);
 
     t1->start();
     t1->join();

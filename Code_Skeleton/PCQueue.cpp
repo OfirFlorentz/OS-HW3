@@ -3,7 +3,7 @@
 template <typename T>
 PCQueue<T>::PCQueue() : m_sem(0), m_queue(), m_lock(){
     pthread_mutex_init(&m_lock, nullptr);
-};
+}
 
 template <typename T>
 T PCQueue<T>::pop() {

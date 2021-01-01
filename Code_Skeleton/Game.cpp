@@ -36,10 +36,10 @@ void Game::_init_game() {
     for (auto& it : temp) {
         vector<string> v = utils::split(it, ' ');
         vector<int> v_t = vector<int>();
-        for (int i= 0 ; i < v.size(); i++)
+        for (uint i= 0 ; i < v.size(); i++)
             v_t.push_back(atoi(&(v[i][0])));
         m_board.push_back(v_t);
-        m_old_board.push_back(v_t);
+        m_next_board.push_back(v_t);
     }
 
 
@@ -54,10 +54,10 @@ void Game::_init_game() {
 
 
     // Create threads n-1 first threads
-    for (int i = 0; i < m_thread_num - 1; i++) {
-        m_threadpool.push_back(new ThreadP(i, &m_board, &m_old_board, row_num*i, row_num, &m_tile_hist, &m_mutex));
+    for (int i = 0; i < (int)m_thread_num - 1; i++) {
+        m_threadpool.push_back(new ThreadP(i, &m_board, &m_next_board, row_num * i, row_num, &m_tile_hist, &m_mutex));
     }
-    m_threadpool.push_back(new ThreadP(m_thread_num-1, &m_board, &m_old_board, row_num*(m_thread_num-1),
+    m_threadpool.push_back(new ThreadP(m_thread_num - 1, &m_board, &m_next_board, row_num * (m_thread_num - 1),
                                        row_num + remain, &m_tile_hist, &m_mutex));
 
 
@@ -73,18 +73,26 @@ void Game::_step(uint curr_gen) {
 
     //Todo what we do with curr_gen
     // start threads
-    for (int i = 0; i < m_thread_num; ++i) {
+    for (uint i = 0; i < m_thread_num; ++i) { // TODO phase 1 SH
         m_threadpool[i]->start();
     }
-    for (int i = 0; i < m_thread_num; ++i) {
+    for (uint i = 0; i < m_thread_num; ++i) {
         m_threadpool[i]->join();
     }
 
+    m_board = m_next_board; // update curr board to mid-step board represent by m_next_board
 
-    // swap old and new board
-    vector<vector<int>>& temp = m_board;
-    m_board = m_old_board;
-    m_old_board = temp;
+    for (uint i = 0; i < m_thread_num; ++i) { // TODO phase 2 SH
+        m_threadpool[i]->start();
+    }
+    for (uint i = 0; i < m_thread_num; ++i) {
+        m_threadpool[i]->join();
+    }
+
+    // swap old and new board // TODO does not need swapping
+//    vector<vector<int>>& temp = m_board;
+    m_board = m_next_board;
+//    m_next_board = temp;
 }
 
 void Game::_destroy_game(){
@@ -112,8 +120,8 @@ inline void Game::print_board(const char* header) {
         cout << "<------------" << header << "------------>" << endl;
     }
 
-    int field_height  = m_board.size();
-    int field_width = m_board[0].size();
+    uint field_height  = m_board.size();
+    uint field_width = m_board[0].size();
     cout << u8"╔" << string(u8"═") * field_width << u8"╗" << endl;
     for (uint i = 0; i < field_height; ++i) {
         cout << u8"║";

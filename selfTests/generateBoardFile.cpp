@@ -5,7 +5,6 @@
 // Streams  & Filesystem:
 #include <fstream>
 #include <iostream>
-#include <sstream>
 using namespace std;
 
 int main(){
@@ -13,7 +12,7 @@ int main(){
     int row = 1 + (rand() % 100);
     int col = 1 + (rand() % 200);
 
-    ofstream m_file("random_board3.txt");
+    ofstream m_file("random_board2.txt");
 
     for (int i = 0; i < row; ++i) {
 

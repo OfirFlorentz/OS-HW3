@@ -43,7 +43,7 @@ int main() {
 
     for (uint i = 0; i < size; ++i) {
 
-        ThreadP * thr = new ThreadP(0,board1,next_board,0,5);;
+        ThreadP * thr = new ThreadP(0, board1, next_board, 0, 5);;
         m_threadpool.push_back(thr);
     }
     cout << "pass creating the threads" << endl;

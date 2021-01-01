@@ -3,13 +3,12 @@
 Semaphore::Semaphore() : counter(1), min(0), next(0) { // TODO
     pthread_mutex_init(&m, nullptr);
     pthread_cond_init(&c, nullptr);
-};
+}
 
 Semaphore::Semaphore(unsigned val) : counter(val), min(0), next(0) { // TODO val=0 (piazza?)
     pthread_mutex_init(&m, nullptr);
     pthread_cond_init(&c, nullptr);
-
-};
+}
 
 void Semaphore::up() {
     pthread_mutex_lock(&m);

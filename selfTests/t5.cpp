@@ -32,7 +32,7 @@ void test1 () {
     cout << "************ start test1 ************" << endl;
     struct game_params p1;
     p1.n_gen = 10;
-    p1.n_thread = 2;
+    p1.n_thread = 5;
     p1.filename = "../Tools/example_IO_files/small.txt";
     p1.interactive_on = false;
     p1.print_on = true;
@@ -108,10 +108,10 @@ void test5 () {
 
 int main() {
     test1();
-    test2();
-    test3();
-    test4();
-    test5();
+//    test2();
+//    test3();
+//    test4();
+//    test5();
 
 
 
