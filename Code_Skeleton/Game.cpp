@@ -8,11 +8,12 @@ inline static void print_board(const char* header) ;
 /*--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------*/
-Game::Game(game_params m_gp) : m_gen_num(m_gp.n_gen), interactive_on(m_gp.interactive_on), print_on(m_gp.print_on),
-m_filename(m_gp.filename), m_gen_hist(), m_tile_hist(), m_threadpool(), m_board(), m_thread_temp (m_gp.n_thread) {}
+Game::Game(game_params m_gp) : m_gen_num(m_gp.n_gen), m_thread_num(m_gp.n_thread), m_thread_temp(m_gp.n_thread),
+                                m_tile_hist(), m_gen_hist(),  m_threadpool(), interactive_on(m_gp.interactive_on),
+                                print_on(m_gp.print_on), m_board(), m_next_board(), m_filename(m_gp.filename), m_mutex() {}
 
 
-void Game::run() {
+void Game::run() { // TODO in makefile: TODO i added "-pthread" SH
 
 	_init_game(); // Starts the threads and all other variables you need
 	print_board("Initial Board");
@@ -42,7 +43,6 @@ void Game::_init_game() {
         m_next_board.push_back(v_t);
     }
 
-
     if (m_thread_temp > m_board.size()) {
         m_thread_num = m_board.size();
     } else {
@@ -60,9 +60,7 @@ void Game::_init_game() {
     m_threadpool.push_back(new ThreadP(m_thread_num - 1, &m_board, &m_next_board, row_num * (m_thread_num - 1),
                                        row_num + remain, &m_tile_hist, &m_mutex));
 
-
-
-// Start the threads
+    // Start the threads // TODO ???? SH
 	// Testing of your implementation will presume all threads are started here
 }
 
@@ -102,6 +100,18 @@ void Game::_destroy_game(){
     for(auto & i : m_threadpool) {
         delete i;
     }
+}
+
+const vector<float> Game::gen_hist() const {
+    return m_gen_hist;
+}
+
+const vector<float> Game::tile_hist() const {
+    return m_tile_hist;
+}
+
+uint Game::thread_num() const {
+    return m_thread_num;
 }
 
 /*--------------------------------------------------------------------------------

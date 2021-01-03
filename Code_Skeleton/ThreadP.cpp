@@ -14,11 +14,11 @@ void ThreadP::thread_workload() {
 
         for (int i = start_line; i < start_line+num_of_line; ++i) {
             int bottom = 0 > i-1 ? 0 : i-1;
-            int top = i+1 < curr_board->size() ? i+1 : curr_board->size()-1;
+            int top = i+1 < (int)curr_board->size() ? i+1 : (int)curr_board->size()-1;
 
-            for (int j = 0; j < (*curr_board)[i].size(); ++j) {
+            for (int j = 0; j < (int)(*curr_board)[i].size(); ++j) {
                 int left = 0 > j-1 ? 0 : j-1;
-                int right = (*curr_board)[i].size()-1 < j+1 ? (*curr_board)[i].size()-1 : j+1;
+                int right = (int)(*curr_board)[i].size()-1 < j+1 ? (int)(*curr_board)[i].size()-1 : j+1;
 
                 int num_of_neighbours = 0;
                 int colors_hist [8] = {0,0,0,0,0,0,0,0};
@@ -60,16 +60,16 @@ void ThreadP::thread_workload() {
 
         for (int i = start_line; i < start_line+num_of_line; ++i) {
             int bottom = 0 > i-1 ? 0 : i-1;
-            int top = i+1 < curr_board->size() ? i+1 : curr_board->size()-1;
+            int top = i+1 < (int)curr_board->size() ? i+1 : curr_board->size()-1;
 
-            for (int j = 0; j < (*curr_board)[i].size(); ++j) {
+            for (int j = 0; j < (int)(*curr_board)[i].size(); ++j) {
                 if ((*curr_board)[i][j] == 0) {
                     continue;
                 }
 
 
                 int left = 0 > j-1 ? 0 : j-1;
-                int right = (*curr_board)[i].size()-1 < j+1 ? (*curr_board)[i].size()-1 : j+1;
+                int right = (int) (*curr_board)[i].size()-1 < j+1 ? (int) (*curr_board)[i].size()-1 : j+1;
 
                 double num_of_neighbours = 0;
                 double sum_vals = 0;

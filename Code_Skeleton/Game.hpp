@@ -34,7 +34,7 @@ class Game {
 public:
 
 	Game(game_params);
-	~Game();
+	~Game() = default; // TODO ??? SH
 	void run(); // Runs the game
 	const vector<float> gen_hist() const; // Returns the generation timing histogram  
 	const vector<float> tile_hist() const; // Returns the tile timing histogram
@@ -50,7 +50,7 @@ protected: // All members here are protected, instead of private for testing pur
 	inline  void print_board(const char* header);
 
 
-  uint m_gen_num; 			 // The number of generations to run
+    uint m_gen_num; 			 // The number of generations to run
 	uint m_thread_num; 			 // Effective number of threads = min(thread_num, field_height)
 	uint m_thread_temp;    // not Effective number of threads
 	vector<float> m_tile_hist; 	 // Shared Timing history for tiles: First m_gen_num cells are the calculation durations for tiles in generation 1 and so on.
