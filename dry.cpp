@@ -48,7 +48,7 @@ void cond_wait(condvar* c, mutex* m) {
 
     // the mutex from func came locked. we need to unlock it so other tasks could use it
     mutex_unlock(m);
-    H(&c->h, 0.5, -1);
+    H(&c->h, 1, -1);
     mutex_lock(m);
 }
 
@@ -78,8 +78,9 @@ void H(singlephore *h, int bound, int delta) {
         hw.bound = bound;
         cond_init(&h->cv);
         h->waiters.pushback(*hw);
-        while(h->value < bound)
-            cond_wait(&(hw->cv), &(h->m))
+        while(h->value < bound);
+            cond_wait(&(hw->cv), &(h->m));
+        h->waiters.erase(*hw);
     }
 
     h->value += delta;
@@ -96,3 +97,74 @@ void H(singlephore *h, int bound, int delta) {
 }
 
 
+/** part 3 - question 1.3 **/
+
+class Barrier {
+private:
+    int working;
+    mutex_t m;
+public:
+    Barrier(){
+        working =0;
+        mutex_init(&m);
+    }
+
+    increase() {
+        mutex_lock(&m);
+        working++;
+        mutex_unlock(&m);
+    }
+    decrease(){
+        mutex_lock(&m);
+        working--;
+        mutex_unlock(&m);
+    }
+
+    wait(){
+        while(working>=0){}
+    }
+};
+
+/** part 3 - question 1.3 **/
+class Barrier {
+private:
+    int reader[N];
+    int writer[N];
+    int curr;
+    mutex_init(&m);
+
+public:
+    Barrier() : max_size(){
+        mutex_init(&m);
+        curr = 0;
+        for(int i=0; i < N; i++) {
+            reader[i] = 0;
+        }
+    }
+
+    increase() {
+        while(true) {
+            int res
+            for(int i=0; i < N; i++) {
+                res = CAS(reader, 0 , 1 );
+                // found empty slot
+                if (res ==1)
+                    return;
+            }
+        }
+    }
+
+    decrease(){
+        int res
+        for(int i=0; i < N; i++) {
+            res = CAS(reader, 1 , 0 );
+            //  found occupied  slot
+            if (res == 0)
+                return;
+        }
+    }
+
+    wait(){
+        while(working>=0){}
+    }
+};
