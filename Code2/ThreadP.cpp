@@ -63,6 +63,7 @@ void ThreadP::thread_workload() {
         while ((*s_stopper_phase1) != 0) {
             pthread_cond_wait(s_cond, s_mutex);
         }
+        pthread_mutex_unlock(s_mutex);
 
         // start phase 2
         for (int i = start_line; i < start_line + num_of_lines; ++i) {
@@ -96,6 +97,7 @@ void ThreadP::thread_workload() {
         auto end = std::chrono::system_clock::now();
         s_tile_hist->push_back((float) std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
         (*s_stopper_phase2)--;
+        pthread_cond_broadcast(s_cond);
         pthread_mutex_unlock(s_mutex);
     }
 }

@@ -51,6 +51,8 @@ void Game::_init_game() {
         m_thread_num = m_thread_temp;
     }
 
+    m_tmp_board = m_board;
+
     for (uint i = 0; i < m_thread_num; i++) {
 
         ThreadP *th_p = new ThreadP(i, &m_board, &m_tmp_board, &m_next_board, &m_pcq, &m_tile_hist, &m_mutex,
@@ -75,7 +77,7 @@ void Game::_step(uint curr_gen) {
     int row_num = m_board.size() / m_thread_num;
     int remain = m_board.size() % m_thread_num;
 
-    for (uint i = 0; i < m_thread_num; i++) {
+    for (uint i = 0; i < m_thread_num-1; i++) {
         m_pcq.push(Job(row_num*i, row_num));
     }
     m_pcq.push(Job(row_num * (m_thread_num - 1), row_num + remain));
