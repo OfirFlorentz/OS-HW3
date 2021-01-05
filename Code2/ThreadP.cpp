@@ -97,7 +97,7 @@ void ThreadP::thread_workload() {
         auto end = std::chrono::system_clock::now();
         s_tile_hist->push_back((float) std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
         (*s_stopper_phase2)--;
-        pthread_cond_broadcast(s_cond);
+        pthread_cond_broadcast(s_cond);  // TODO
         pthread_mutex_unlock(s_mutex);
     }
 }

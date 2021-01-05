@@ -97,6 +97,7 @@ void Game::_destroy_game(){
     for(auto & i : m_threadpool) {
         delete i;
     }
+
 }
 
 const vector<float> Game::gen_hist() const {
