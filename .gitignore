@@ -1,3 +1,11 @@
 /CMakeLists.txt
 /main.cpp
 /tester0/
+/Code_Skeleton/Game.o
+/Code_Skeleton/.depend
+/Code_Skeleton/GameOfLife
+/Code_Skeleton/main.o
+/Code_Skeleton/PCQueue.o
+/Code_Skeleton/Semaphore.o
+/Code_Skeleton/ThreadP.o
+/Code_Skeleton/utils.o
