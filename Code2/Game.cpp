@@ -94,6 +94,16 @@ void Game::_destroy_game(){
 	// Destroys board and frees all threads and resources 
 	// Not implemented in the Game's destructor for testing purposes. 
 	// Testing of your implementation will presume all threads are joined here
+
+    for (uint i = 0; i < m_thread_num; i++) {
+        m_pcq.push(Job(-1, -1)); // this will terminate thread
+    }
+
+    for (uint i = 0; i < m_thread_num; i++) {
+        m_threadpool[i]->join(); // this will terminate thread
+    }
+
+
     for(auto & i : m_threadpool) {
         delete i;
     }

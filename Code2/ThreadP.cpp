@@ -13,6 +13,10 @@ ThreadP::ThreadP(uint thread_id, vector<vector<int>> *curr_board, vector<vector<
 void ThreadP::thread_workload() {
     while (1) {
         Job job = s_pcq->pop(); // also uses as cond_wait
+
+        if (job.get_num_of_lines() == -1)
+            return;
+
         auto start = std::chrono::system_clock::now();
         int start_line = job.get_start_line();
         int num_of_lines = job.get_num_of_lines();
