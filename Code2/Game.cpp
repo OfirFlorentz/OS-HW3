@@ -3,7 +3,6 @@
 #include "ThreadP.hpp"
 
 static const char *colors[7] = {BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN};
-inline static void print_board(const char* header) ;
 
 /*--------------------------------------------------------------------------------
 
