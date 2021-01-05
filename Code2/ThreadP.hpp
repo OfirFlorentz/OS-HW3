@@ -6,20 +6,26 @@
 #define WET3_FILES_THREADP_H
 
 #include "Thread.hpp"
+#include "PCQueue.hpp"
+#include "Job.hpp"
 
 class ThreadP: public Thread{
     vector<vector<int>>* curr_board;
+    vector<vector<int>>* mid_board;
     vector<vector<int>>* next_board;
-    int start_line;
-    int num_of_line;
-    vector<float>* tile_hist;
-    pthread_mutex_t* mutex;
-    float time_temp;
-    bool phase;
+
+    PCQueue<Job>* s_pcq;
+    vector<float>* s_tile_hist;
+    pthread_mutex_t* s_mutex;
+    pthread_cond_t* s_cond;
+
+    uint* s_stopper_phase1;
+    uint* s_stopper_phase2;
 
 public:
-    ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* next_board, int start_line,
-            int num_of_line, vector<float>* tile_hist, pthread_mutex_t* mutex);
+    ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* mid_board,
+            vector<vector<int>>* next_board, PCQueue<Job>* pcq, vector<float>* hist, pthread_mutex_t* mutex,
+            pthread_cond_t* cond, uint* s_phase1, uint* s_phase2);
     ~ThreadP() = default;
     void thread_workload() override;
 };

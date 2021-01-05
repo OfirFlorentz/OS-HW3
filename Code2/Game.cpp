@@ -9,8 +9,10 @@ inline static void print_board(const char* header) ;
 
 --------------------------------------------------------------------------------*/
 Game::Game(game_params m_gp) : m_gen_num(m_gp.n_gen), m_thread_num(m_gp.n_thread), m_thread_temp(m_gp.n_thread),
-                                m_tile_hist(), m_gen_hist(),  m_threadpool(), interactive_on(m_gp.interactive_on),
-                                print_on(m_gp.print_on), m_board(), m_next_board(), m_filename(m_gp.filename), m_mutex() {}
+                                m_tile_hist(), m_gen_hist(), m_threadpool(), interactive_on(m_gp.interactive_on),
+                                print_on(m_gp.print_on), m_board(), m_tmp_board(), m_next_board(),
+                                m_filename(m_gp.filename), m_mutex(), m_cond(), m_pcq(), m_stopper_phase1(0),
+                                m_stopper_phase2(0) {}
 
 
 void Game::run() { // TODO in makefile: TODO i added "-pthread" SH
@@ -49,19 +51,17 @@ void Game::_init_game() {
         m_thread_num = m_thread_temp;
     }
 
-    int row_num = m_board.size() / m_thread_num;
-    int remain = m_board.size() % m_thread_num;
+    for (uint i = 0; i < m_thread_num; i++) {
 
-
-    // Create threads n-1 first threads
-    for (int i = 0; i < (int)m_thread_num - 1; i++) {
-        m_threadpool.push_back(new ThreadP(i, &m_board, &m_next_board, row_num * i, row_num, &m_tile_hist, &m_mutex));
+        ThreadP *th_p = new ThreadP(i, &m_board, &m_tmp_board, &m_next_board, &m_pcq, &m_tile_hist, &m_mutex,
+                                    &m_cond, &m_stopper_phase1, &m_stopper_phase2);
+        th_p->start();
+        m_threadpool.push_back(th_p);
     }
-    m_threadpool.push_back(new ThreadP(m_thread_num - 1, &m_board, &m_next_board, row_num * (m_thread_num - 1),
-                                       row_num + remain, &m_tile_hist, &m_mutex));
 
-    // Start the threads // TODO ???? SH
-	// Testing of your implementation will presume all threads are started here
+    // Create game fields - Consider using utils:read_file, utils::split
+    // Create & Start threads
+    // Testing of your implementation will presume all threads are started here
 }
 
 void Game::_step(uint curr_gen) {
@@ -69,28 +69,23 @@ void Game::_step(uint curr_gen) {
 	// Wait for the workers to finish calculating
 	// Swap pointers between current and next field
 
-    //Todo what we do with curr_gen
-    // start threads
-    for (uint i = 0; i < m_thread_num; ++i) { // TODO phase 1 SH
-        m_threadpool[i]->start();
-    }
-    for (uint i = 0; i < m_thread_num; ++i) {
-        m_threadpool[i]->join();
-    }
+    m_stopper_phase1 = m_thread_num;
+    m_stopper_phase2 = m_thread_num;
 
+    int row_num = m_board.size() / m_thread_num;
+    int remain = m_board.size() % m_thread_num;
+
+    for (uint i = 0; i < m_thread_num; i++) {
+        m_pcq.push(Job(row_num*i, row_num));
+    }
+    m_pcq.push(Job(row_num * (m_thread_num - 1), row_num + remain));
+
+    pthread_mutex_lock(&m_mutex);
+    while(m_stopper_phase2 != 0) {
+        pthread_cond_wait(&m_cond, &m_mutex);
+    }
     m_board = m_next_board; // update curr board to mid-step board represent by m_next_board
-
-    for (uint i = 0; i < m_thread_num; ++i) { // TODO phase 2 SH
-        m_threadpool[i]->start();
-    }
-    for (uint i = 0; i < m_thread_num; ++i) {
-        m_threadpool[i]->join();
-    }
-
-    // swap old and new board // TODO does not need swapping
-//    vector<vector<int>>& temp = m_board;
-    m_board = m_next_board;
-//    m_next_board = temp;
+    pthread_mutex_unlock(&m_mutex);
 }
 
 void Game::_destroy_game(){

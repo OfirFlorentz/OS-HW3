@@ -15,9 +15,9 @@ public:
 private:
     pthread_mutex_t m;
     pthread_cond_t c;
-    unsigned int counter; // num of max cores available at the moment (set by val arg in c'tor)
-    unsigned int min; // min thread-id waiting to enter the critical section
-    unsigned int next; // gives every new thread (who asking to enter) a unique id
+    unsigned long counter; // num of max cores available at the moment (set by val arg in c'tor)
+    unsigned long min; // min thread-id waiting to enter the critical section
+    unsigned long next; // gives every new thread (who asking to enter) a unique id
 };
 
 #endif

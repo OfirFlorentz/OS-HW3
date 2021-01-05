@@ -1,11 +1,11 @@
 #include "Semaphore.hpp"
 
-Semaphore::Semaphore() : counter(1), min(0), next(0) { // TODO
+Semaphore::Semaphore() : counter(0), min(0), next(0) { // TODO i changed to counter(0). so start it already lock
     pthread_mutex_init(&m, nullptr);
     pthread_cond_init(&c, nullptr);
 }
 
-Semaphore::Semaphore(unsigned val) : counter(val), min(0), next(0) { // TODO val=0 (piazza?)
+Semaphore::Semaphore(unsigned val) : counter((unsigned long)val), min(0), next(0) {
     pthread_mutex_init(&m, nullptr);
     pthread_cond_init(&c, nullptr);
 }
@@ -13,7 +13,7 @@ Semaphore::Semaphore(unsigned val) : counter(val), min(0), next(0) { // TODO val
 void Semaphore::up() {
     pthread_mutex_lock(&m);
     ++counter;
-    pthread_cond_broadcast(&c);
+    pthread_cond_broadcast(&c);  // TODO speed vs Deadlock
 //    pthread_cond_signal(&c); // TODO speed vs Deadlock
     pthread_mutex_unlock(&m);
 }
@@ -21,11 +21,12 @@ void Semaphore::up() {
 void Semaphore::down() {
     pthread_mutex_lock(&m);
 
-    unsigned int id = next++;
+    unsigned long id = next++;
 
-    while (id >= counter+min || counter == 0) {
+    while (counter == 0 || id > counter+min) {
         pthread_cond_wait(&c, &m);
     }
+    assert(counter!=0);
     --counter;
     ++min;
     pthread_mutex_unlock(&m);
