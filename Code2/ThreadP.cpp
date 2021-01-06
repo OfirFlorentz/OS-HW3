@@ -14,9 +14,6 @@ void ThreadP::thread_workload() {
     while (1) {
         Job job = s_pcq->pop(); // also uses as cond_wait
 
-        if (job.get_num_of_lines() == -1)
-            return;
-
         auto start = std::chrono::system_clock::now();
         int start_line = job.get_start_line();
         int num_of_lines = job.get_num_of_lines();
@@ -98,10 +95,14 @@ void ThreadP::thread_workload() {
         }
 
         pthread_mutex_lock(s_mutex);
+        (*s_stopper_phase2)--;
         auto end = std::chrono::system_clock::now();
         s_tile_hist->push_back((float) std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
-        (*s_stopper_phase2)--;
         pthread_cond_broadcast(s_cond);  // TODO
         pthread_mutex_unlock(s_mutex);
+
+        if(job.get_is_last_call()) {
+            return;
+        }
     }
 }

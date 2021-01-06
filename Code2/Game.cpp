@@ -76,10 +76,12 @@ void Game::_step(uint curr_gen) {
     int row_num = m_board.size() / m_thread_num;
     int remain = m_board.size() % m_thread_num;
 
+    bool is_last_call = curr_gen==m_gen_num-1;
+
     for (uint i = 0; i < m_thread_num-1; i++) {
-        m_pcq.push(Job(row_num*i, row_num));
+        m_pcq.push(Job(row_num*i, row_num, is_last_call));
     }
-    m_pcq.push(Job(row_num * (m_thread_num - 1), row_num + remain));
+    m_pcq.push(Job(row_num * (m_thread_num - 1), row_num + remain, is_last_call));
 
     pthread_mutex_lock(&m_mutex);
     while(m_stopper_phase2 != 0) {
@@ -95,15 +97,10 @@ void Game::_destroy_game(){
 	// Testing of your implementation will presume all threads are joined here
 
     for (uint i = 0; i < m_thread_num; i++) {
-        m_pcq.push(Job(-1, -1)); // this will terminate thread
-    }
-
-    for (uint i = 0; i < m_thread_num; i++) {
         m_threadpool[i]->join(); // this will terminate thread
     }
 
-
-    for(auto & i : m_threadpool) {
+    for(auto & i : m_threadpool) { // TODO useless?
         delete i;
     }
 
