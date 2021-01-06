@@ -5,7 +5,7 @@
 // Synchronization Warm up 
 class Semaphore {
 public:
-    Semaphore(); // Constructs a new semaphore with a counter of 0  // TODO nonsense
+    Semaphore(); // Constructs a new semaphore with a counter of 0
     Semaphore(unsigned val); // Constructs a new semaphore with a counter of val
 
 

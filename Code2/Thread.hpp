@@ -2,7 +2,6 @@
 #define __THREAD_H
 
 #include "Headers.hpp"
-//#include <pthread.h> // TODO i added this. make does not work without it SH
 
 class Thread
 {
@@ -34,7 +33,6 @@ protected:
 
 private:
 	static void *  entry_func(void * thread) {
-//		cout << "inside entry_func. trying to accesses thread_workload" << endl;  // TODO double print problem. need to speak about it SH
         ((Thread *)thread)->thread_workload();
         return NULL;
 	}
