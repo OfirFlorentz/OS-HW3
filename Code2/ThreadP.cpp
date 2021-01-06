@@ -66,7 +66,7 @@ void ThreadP::thread_workload() {
 //        }
         pthread_mutex_unlock(s_mutex);
 
-        while (*s_stopper_phase1 != 0) {} // TODO faster
+        while (*s_stopper_phase1 != 0) {sched_yield();} // TODO faster
 
         // start phase 2
         for (int i = start_line; i < start_line + num_of_lines; ++i) {

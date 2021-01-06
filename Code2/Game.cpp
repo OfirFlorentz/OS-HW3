@@ -87,7 +87,7 @@ void Game::_step(uint curr_gen) {
 //    while(m_stopper_phase2 != 0) {
 //        pthread_cond_wait(&m_cond, &m_mutex);
 //    }
-    while (m_stopper_phase2 != 0) {} // TODO faster
+    while (m_stopper_phase2 != 0) {sched_yield();} // TODO faster
 
 
     m_board = m_next_board; // update curr board to mid-step board represent by m_next_board
