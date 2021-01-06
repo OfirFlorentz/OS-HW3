@@ -61,10 +61,12 @@ void ThreadP::thread_workload() {
 
         pthread_mutex_lock(s_mutex);
         (*s_stopper_phase1)--;
-        while ((*s_stopper_phase1) != 0) {
-            pthread_cond_wait(s_cond, s_mutex);
-        }
+//        while ((*s_stopper_phase1) != 0) {
+//            pthread_cond_wait(s_cond, s_mutex);
+//        }
         pthread_mutex_unlock(s_mutex);
+
+        while (*s_stopper_phase1 != 0) {} // TODO faster
 
         // start phase 2
         for (int i = start_line; i < start_line + num_of_lines; ++i) {
@@ -98,7 +100,7 @@ void ThreadP::thread_workload() {
         (*s_stopper_phase2)--;
         auto end = std::chrono::system_clock::now();
         s_tile_hist->push_back((float) std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
-        pthread_cond_broadcast(s_cond);  // TODO
+//        pthread_cond_broadcast(s_cond);  // TODO
         pthread_mutex_unlock(s_mutex);
 
         if(job.get_is_last_call()) {

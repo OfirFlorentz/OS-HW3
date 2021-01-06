@@ -83,12 +83,15 @@ void Game::_step(uint curr_gen) {
     }
     m_pcq.push(Job(row_num * (m_thread_num - 1), row_num + remain, is_last_call));
 
-    pthread_mutex_lock(&m_mutex);
-    while(m_stopper_phase2 != 0) {
-        pthread_cond_wait(&m_cond, &m_mutex);
-    }
+//    pthread_mutex_lock(&m_mutex);
+//    while(m_stopper_phase2 != 0) {
+//        pthread_cond_wait(&m_cond, &m_mutex);
+//    }
+    while (m_stopper_phase2 != 0) {} // TODO faster
+
+
     m_board = m_next_board; // update curr board to mid-step board represent by m_next_board
-    pthread_mutex_unlock(&m_mutex);
+//    pthread_mutex_unlock(&m_mutex);
 }
 
 void Game::_destroy_game(){
