@@ -61,28 +61,28 @@ void ThreadP::thread_workload() {
         else { // phase2
             for (int i = start_line; i < start_line + num_of_lines; ++i) {
                 int bottom = 0 > i - 1 ? 0 : i - 1;
-                int top = i + 1 < (int) curr_board->size() ? i + 1 : (int)curr_board->size() - 1;
+                int top = i + 1 < (int) next_board->size() ? i + 1 : (int)next_board->size() - 1;
 
-                for (int j = 0; j < (int) (*curr_board)[i].size(); ++j) {
-                    if ((*curr_board)[i][j] == 0) {
-                        (*next_board)[i][j] = 0;
+                for (int j = 0; j < (int) (*next_board)[i].size(); ++j) {
+                    if ((*next_board)[i][j] == 0) {
+                        (*curr_board)[i][j] = 0;
                         continue;
                     }
 
                     int left = 0 > j - 1 ? 0 : j - 1;
-                    int right = (int) (*curr_board)[i].size() - 1 < j + 1 ? (int) (*curr_board)[i].size() - 1 : j + 1;
+                    int right = (int) (*next_board)[i].size() - 1 < j + 1 ? (int) (*next_board)[i].size() - 1 : j + 1;
 
                     double num_of_neighbours = 0;
                     double sum_vals = 0;
                     for (int k = bottom; k <= top; ++k) { // count num of alive neighbours
                         for (int l = left; l <= right; ++l) {
-                            if ((*curr_board)[k][l] != 0) {
+                            if ((*next_board)[k][l] != 0) {
                                 num_of_neighbours++;
-                                sum_vals += (*curr_board)[k][l];
+                                sum_vals += (*next_board)[k][l];
                             }
                         }
                     }
-                    (*next_board)[i][j] = round(sum_vals / num_of_neighbours); // num_of_neighbours>0 due phase1
+                    (*curr_board)[i][j] = round(sum_vals / num_of_neighbours); // num_of_neighbours>0 due phase1
                 }
             }
         }

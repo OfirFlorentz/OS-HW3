@@ -3,7 +3,7 @@
 
 #include "Thread.hpp"
 #include "Headers.hpp"
-#include "PCQueue.hpp" // TODO i added those SH
+#include "PCQueue.hpp"
 #include "Job.hpp"
 /*--------------------------------------------------------------------------------
 								  Species colors
@@ -63,8 +63,8 @@ protected: // All members here are protected, instead of private for testing pur
 	bool interactive_on; // Controls interactive mode - that means, prints the board as an animation instead of a simple dump to STDOUT 
 	bool print_on; // Allows the printing of the board. Turn this off when you are checking performance (Dry 3, last question)
 
-	vector<vector<int>> m_board;
-	vector<vector<int>> m_next_board;
+	vector<vector<int>>* m_board;
+	vector<vector<int>>* m_next_board;
 	string m_filename;
 	pthread_mutex_t m_mutex;
 	PCQueue<Job> m_pcq;
