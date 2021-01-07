@@ -22,7 +22,7 @@ void Game::run() { // TODO in makefile: TODO i added "-pthread" SH
 		auto gen_start = std::chrono::system_clock::now();
 		_step(i); // Iterates a single generation 
 		auto gen_end = std::chrono::system_clock::now();
-		m_gen_hist.push_back((float)std::chrono::duration_cast<std::chrono::microseconds>(gen_end - gen_start).count());
+		m_gen_hist.push_back((double)std::chrono::duration_cast<std::chrono::microseconds>(gen_end - gen_start).count());
 		print_board(NULL);
 	} // generation loop
 	print_board("Final Board");
@@ -76,19 +76,26 @@ void Game::_step(uint curr_gen) {
     int row_num = m_board.size() / m_thread_num;
     int remain = m_board.size() % m_thread_num;
 
+    for (uint i = 0; i < m_thread_num-1; i++) {
+        m_pcq.push(Job(true, row_num*i, row_num, false));
+    }
+    m_pcq.push(Job(true, row_num * (m_thread_num - 1), row_num + remain, false));
+
     bool is_last_call = curr_gen==m_gen_num-1;
 
+    while (m_stopper_phase1 != 0) {} // busy wait
+    m_stopper_phase1 = m_thread_num;
+
     for (uint i = 0; i < m_thread_num-1; i++) {
-        m_pcq.push(Job(row_num*i, row_num, is_last_call));
+        m_pcq.push(Job(false, row_num*i, row_num, is_last_call));
     }
-    m_pcq.push(Job(row_num * (m_thread_num - 1), row_num + remain, is_last_call));
+    m_pcq.push(Job(false, row_num * (m_thread_num - 1), row_num + remain, is_last_call));
 
 //    pthread_mutex_lock(&m_mutex);
 //    while(m_stopper_phase2 != 0) {
 //        pthread_cond_wait(&m_cond, &m_mutex);
 //    }
-    while (m_stopper_phase2 != 0) {sched_yield();} // TODO faster
-
+    while (m_stopper_phase1 != 0) {} // busy wait
 
     m_board = m_next_board; // update curr board to mid-step board represent by m_next_board
 //    pthread_mutex_unlock(&m_mutex);
@@ -109,11 +116,11 @@ void Game::_destroy_game(){
 
 }
 
-const vector<float> Game::gen_hist() const {
+const vector<double> Game::gen_hist() const {
     return m_gen_hist;
 }
 
-const vector<float> Game::tile_hist() const {
+const vector<double> Game::tile_hist() const {
     return m_tile_hist;
 }
 

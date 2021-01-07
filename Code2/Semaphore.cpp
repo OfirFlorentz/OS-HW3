@@ -13,8 +13,8 @@ Semaphore::Semaphore(unsigned val) : counter((unsigned long)val), min(0), next(0
 void Semaphore::up() {
     pthread_mutex_lock(&m);
     ++counter;
-    pthread_cond_broadcast(&c);  // TODO speed vs Deadlock
-//    pthread_cond_signal(&c); // TODO speed vs Deadlock
+//    pthread_cond_broadcast(&c);  // TODO speed vs Deadlock
+    pthread_cond_signal(&c); // TODO speed vs Deadlock
     pthread_mutex_unlock(&m);
 }
 
@@ -23,7 +23,8 @@ void Semaphore::down() {
 
     unsigned long id = next++;
 
-    while (counter == 0 || id > counter+min) {
+//    while (counter == 0 || id > counter+min) {
+    while (counter == 0) {
         pthread_cond_wait(&c, &m);
     }
     assert(counter!=0);

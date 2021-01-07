@@ -8,7 +8,7 @@
 template <typename T>class PCQueue
 {
 public:
-    PCQueue() : m_sem(), m_queue(), m_lock(), producer_await(false){
+    PCQueue() : m_sem(), m_queue(), m_lock(), producer_await(0){
         pthread_mutex_init(&m_lock, nullptr);
     }
 
@@ -29,11 +29,11 @@ public:
     // Hint for *minimal delay* - Allow the consumers to delay the producer as little as possible.
     // Assumes single producer
     void push(const T& item) {
-        producer_await = true;  // TODO !!!!!!!!!!!@!!!!!!!!!!!
-        pthread_mutex_lock(&m_lock);
+        ++producer_await;  // TODO !!!!!!!!!!!@!!!!!!!!!!!
+        pthread_mutex_lock(&m_lock);  // TODO ?????%?????????
         m_queue.push(item);
-        producer_await = false; // TODO !!!!!!!!!!!@!!!!!!!!!!!
-        pthread_mutex_unlock(&m_lock);
+        --producer_await; // TODO !!!!!!!!!!!@!!!!!!!!!!!
+        pthread_mutex_unlock(&m_lock);  // TODO ?????%?????????
         m_sem.up();
     }
 
@@ -42,7 +42,7 @@ private:
     Semaphore m_sem;
     queue<T> m_queue;
     pthread_mutex_t m_lock;
-    bool producer_await;  // TODO !!!!!!!!!!!@!!!!!!!!!!!
+    int producer_await;  // TODO !!!!!!!!!!!@!!!!!!!!!!!
 };
 // Recommendation: Use the implementation of the std::queue for this exercise
 #endif

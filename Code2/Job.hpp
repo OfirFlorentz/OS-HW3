@@ -7,13 +7,15 @@
 
 
 class Job {
+    bool phase1;
     int start_line;
     int num_of_lines;
     bool last_call;
 
 public:
-    Job(int start_line, int num_of_lines, bool last_call = false);
+    Job(bool phase1, int start_line, int num_of_lines, bool last_call);
     ~Job()=default;
+    bool get_which_phase();
     int get_start_line();
     int get_num_of_lines();
     bool get_is_last_call();

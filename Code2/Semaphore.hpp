@@ -2,7 +2,7 @@
 #define __SEMAPHORE_H
 #include "Headers.hpp"
 
-// Synchronization Warm up 
+// Synchronization Warm up
 class Semaphore {
 public:
     Semaphore(); // Constructs a new semaphore with a counter of 0

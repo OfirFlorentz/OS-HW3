@@ -15,7 +15,7 @@ class ThreadP: public Thread{
     vector<vector<int>>* next_board;
 
     PCQueue<Job>* s_pcq;
-    vector<float>* s_tile_hist;
+    vector<double>* s_tile_hist;
     pthread_mutex_t* s_mutex;
     pthread_cond_t* s_cond;
 
@@ -24,7 +24,7 @@ class ThreadP: public Thread{
 
 public:
     ThreadP(uint thread_id, vector<vector<int>>* curr_board, vector<vector<int>>* mid_board,
-            vector<vector<int>>* next_board, PCQueue<Job>* pcq, vector<float>* hist, pthread_mutex_t* mutex,
+            vector<vector<int>>* next_board, PCQueue<Job>* pcq, vector<double>* hist, pthread_mutex_t* mutex,
             pthread_cond_t* cond, uint* s_phase1, uint* s_phase2);
     ~ThreadP() = default;
     void thread_workload() override;

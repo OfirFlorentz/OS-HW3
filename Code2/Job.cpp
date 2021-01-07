@@ -4,8 +4,12 @@
 
 #include "Job.hpp"
 
-Job::Job(int start_line, int num_of_lines, bool last_call) : start_line(start_line), num_of_lines(num_of_lines),
-                                                            last_call(last_call){}
+Job::Job(bool phase1, int start_line, int num_of_lines, bool last_call) : phase1(phase1), start_line(start_line),
+                                                            num_of_lines(num_of_lines), last_call(last_call){}
+
+bool Job::get_which_phase() {
+    return phase1;
+}
 
 int Job::get_start_line() {
     return start_line;
