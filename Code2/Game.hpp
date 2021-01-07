@@ -63,19 +63,13 @@ protected: // All members here are protected, instead of private for testing pur
 	bool interactive_on; // Controls interactive mode - that means, prints the board as an animation instead of a simple dump to STDOUT 
 	bool print_on; // Allows the printing of the board. Turn this off when you are checking performance (Dry 3, last question)
 
-	vector<vector<int>>* m_board;
-	vector<vector<int>>* m_tmp_board;
-	vector<vector<int>>* m_next_board;
+	vector<vector<int>> m_board;
+	vector<vector<int>> m_next_board;
 	string m_filename;
 	pthread_mutex_t m_mutex;
-	pthread_cond_t m_cond;
-
 	PCQueue<Job> m_pcq;
-
-    uint m_stopper_phase1;
-    uint m_stopper_phase2;
-
-	// TODO: Add in your variables and synchronization primitives  
+    uint m_finish_phase; // in the start of each phase it set to m_thread_num. each Thread reduce it by one when it finish its phase
+    // this way, we can use busy wait to know in _step when to continue to the next phase
 
 };
 
