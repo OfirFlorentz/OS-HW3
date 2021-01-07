@@ -35,7 +35,7 @@ int main(){
     auto gen_start = std::chrono::system_clock::now();
     test2(1);
     auto gen_end = std::chrono::system_clock::now();
-    cout<< "time for 1 thread was " << ((float)std::chrono::duration_cast<std::chrono::microseconds>(gen_end-gen_start).count()) << endl;
+    cout<< "time for 1 threads was " << ((float)std::chrono::duration_cast<std::chrono::microseconds>(gen_end-gen_start).count()) << endl;
 
     gen_start = std::chrono::system_clock::now();
     int t = 8;

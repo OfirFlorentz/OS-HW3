@@ -63,7 +63,6 @@ void ThreadP::thread_workload() {
             }
         }
         else { // phase2
-            // start phase 2
             for (int i = start_line; i < start_line + num_of_lines; ++i) {
                 int bottom = 0 > i - 1 ? 0 : i - 1;
                 int top = i + 1 < (int) mid_board->size() ? i + 1 : (int)mid_board->size() - 1;
