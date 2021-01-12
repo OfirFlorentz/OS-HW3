@@ -125,26 +125,25 @@ public:
     }
 };
 
-/** part 3 - question 1.3 **/
+/** part 3 - bonus**/
 class Barrier {
 private:
-    int reader[N];
+    int arr1[N];
+    int arr2[N];
     int writer[N];
-    int curr;
-    mutex_init(&m);
 
 public:
     Barrier() : max_size(){
         mutex_init(&m);
         curr = 0;
         for(int i=0; i < N; i++) {
-            reader[i] = 0;
+            arr[i] = 0;
         }
     }
 
     increase() {
         while(true) {
-            int res
+            int res;
             for(int i=0; i < N; i++) {
                 res = CAS(reader, 0 , 1 );
                 // found empty slot
@@ -155,12 +154,14 @@ public:
     }
 
     decrease(){
-        int res
-        for(int i=0; i < N; i++) {
-            res = CAS(reader, 1 , 0 );
-            //  found occupied  slot
-            if (res == 0)
-                return;
+        int res;
+        while (true) {
+            for (int i = 0; i < N; i++) {
+                res = CAS(reader, 1, 0);
+                //  found occupied  slot
+                if (res == 0)
+                    return;
+            }
         }
     }
 
